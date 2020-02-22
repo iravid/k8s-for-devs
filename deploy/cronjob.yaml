@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: enrichment-trigger
+spec:
+  schedule: "*/4 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: curlimages/curl:7.68.0
+            command: ["/bin/sh"]
+            args:
+            - -c
+            - curl -v ${ENRICHMENT_SERVICE_HOST}:${ENRICHMENT_SERVICE_PORT}/name
+          restartPolicy: OnFailure
