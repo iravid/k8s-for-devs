@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: enrichment-config
 data:
+  URL_FOR_INIT: "https://www.google.com/"
   ENABLE_ENRICHMENT: "true"
   ENABLE_EMAILAGE: "false"
   APPCONF: |

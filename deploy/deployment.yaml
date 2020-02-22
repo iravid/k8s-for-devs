@@ -12,6 +12,13 @@ spec:
       labels:
         app: enrichment
     spec:
+      initContainers:
+      - name: curl-somewhere
+        image: curlimages/curl:7.68.0
+        args: ["-v", "$(URL_FOR_INIT)"]
+        envFrom:
+        - configMapRef:
+            name: enrichment-config
       containers:
       - name: enrichment
         image: enrichment:latest
