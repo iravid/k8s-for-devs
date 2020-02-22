@@ -13,7 +13,8 @@ object Main extends Logging {
     implicit val mat = ActorMaterializer()
     implicit val ec = system.dispatcher
 
-    val binding = Http().bindAndHandle(routes, "0.0.0.0", 8080)
+    val threshold = System.currentTimeMillis() + 30*1000
+    val binding = Http().bindAndHandle(routes(threshold), "0.0.0.0", 8080)
 
     sys.addShutdownHook {
       binding
@@ -22,7 +23,7 @@ object Main extends Logging {
     }
   }
 
-  val routes =
+  def routes(threshold: Long) =
     concat(
       pathSingleSlash {
         get {
@@ -39,6 +40,12 @@ object Main extends Logging {
       },
       path("name") {
         complete(s"Hello from ${System.getenv("POD_NAME")}")
+      },
+      path("ready") {
+        if (System.currentTimeMillis >= threshold) 
+          complete(StatusCodes.OK)
+        else
+          complete(StatusCodes.InternalServerError)
       }
     )
 }
