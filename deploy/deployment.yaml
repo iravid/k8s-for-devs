@@ -24,6 +24,15 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        - name: ENABLE_EMAILAGE
+          valueFrom:
+            configMapKeyRef:
+              name: enrichment-config
+              key: ENABLE_EMAILAGE
+        envFrom:
+        - configMapRef:
+            name: enrichment-config
+          prefix: ENV_FROM_
         livenessProbe:
           httpGet:
             path: /health
@@ -35,6 +44,10 @@ spec:
             path: /health
             port: http
           periodSeconds: 5
-        resources:
-          requests:
-            cpu: "16000m"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: enrichment-config

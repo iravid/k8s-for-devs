@@ -6,6 +6,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import org.apache.logging.log4j.scala.Logging
+import scala.io.Source
 
 object Main extends Logging {
   def main(args: Array[String]): Unit = {
@@ -39,6 +40,15 @@ object Main extends Logging {
       },
       path("name") {
         complete(s"Hello from ${System.getenv("POD_NAME")}")
+      },
+      path("print-env") {
+        complete(System.getenv("ENABLE_EMAILAGE"))
+      },
+      path("print-envfrom") {
+        complete(System.getenv("ENV_FROM_ENABLE_ENRICHMENT"))
+      },
+      path("print-file") {
+        complete(Source.fromFile("/app/config/APPCONF").getLines().mkString("\n"))
       }
     )
 }
