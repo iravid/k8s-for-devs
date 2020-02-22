@@ -7,8 +7,6 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import org.apache.logging.log4j.scala.Logging
 
-import scala.util.Random
-
 object Main extends Logging {
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem("k8s-workshop")
@@ -36,10 +34,7 @@ object Main extends Logging {
       },
       path("health") {
         get {
-          val random = Random.nextInt(100) + 1
-
-          if (random <= 50) complete(StatusCodes.InternalServerError)
-          else complete(StatusCodes.OK)
+          complete(StatusCodes.OK)
         }
       }
     )
