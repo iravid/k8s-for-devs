@@ -36,6 +36,9 @@ object Main extends Logging {
         get {
           complete(StatusCodes.OK)
         }
+      },
+      path("name") {
+        complete(s"Hello from ${System.getenv("POD_NAME")}")
       }
     )
 }
