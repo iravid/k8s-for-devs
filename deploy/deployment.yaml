@@ -24,3 +24,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
