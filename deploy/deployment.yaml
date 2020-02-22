@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enrichment
+spec:
+  selector:
+    matchLabels:
+      app: enrichment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: enrichment
+    spec:
+      containers:
+      - name: enrichment
+        image: enrichment:latest
+        imagePullPolicy: Never
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name

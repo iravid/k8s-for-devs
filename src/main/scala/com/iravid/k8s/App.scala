@@ -13,7 +13,7 @@ object Main extends Logging {
     implicit val mat = ActorMaterializer()
     implicit val ec = system.dispatcher
 
-    val binding = Http().bindAndHandle(routes, "localhost", 8080)
+    val binding = Http().bindAndHandle(routes, "0.0.0.0", 8080)
 
     sys.addShutdownHook {
       binding
@@ -23,12 +23,14 @@ object Main extends Logging {
   }
 
   val routes =
-    pathSingleSlash {
-      get {
-        complete {
-          logger.info("Received request")
-          "Hello Kubernetes Workshop!"
+    concat(
+      pathSingleSlash {
+        get {
+          complete {
+            logger.info("Received request")
+            "Hello Kubernetes Workshop!"
+          }
         }
       }
-    }
+    )
 }

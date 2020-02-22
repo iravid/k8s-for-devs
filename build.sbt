@@ -25,3 +25,4 @@ lazy val root = (project in file("."))
     fork in run := true,
     cancelable in Global := false
   )
+  .enablePlugins(UniversalPlugin, JavaAppPackaging)
